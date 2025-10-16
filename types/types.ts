@@ -30,3 +30,26 @@ export interface DataState {
   change: number;
   trend: Trend;
 }
+
+export interface CategoryExpense {
+  name: string;
+  amount: number;
+}
+
+export interface StatsData {
+  total: number;
+  monthly: number;
+  average: number;
+  budgetLeft: number;
+  categories: CategoryExpense[];
+}
+
+export interface Suggestion {
+  title: string;
+  message: string;
+}
+
+export interface Suggestion {
+  title: string;
+  message: string;
+}

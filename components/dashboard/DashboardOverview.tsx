@@ -12,15 +12,31 @@ import { useTotalExpenses } from "@/hooks/useTotalExpenses";
 import { useMonthlyExpenses } from "@/hooks/useMonthlyExpenses";
 import { useAverageDaily } from "@/hooks/useAverageDaily";
 import { useBudgetLeft } from "@/hooks/useBudgetLeft";
+import { useAISuggestions } from "@/hooks/useAISuggestions";
+import { useCategoryExpenses } from "@/hooks/useCategoryExpenses";
 
 const DashboardOverview = () => {
   const { user } = useUser();
   const userId = user?.id || "";
+  const { categories, loading: categoryLoading } = useCategoryExpenses(userId);
 
   const total = useTotalExpenses(userId);
   const monthly = useMonthlyExpenses(userId);
   const average = useAverageDaily(userId);
   const budgetLeft = useBudgetLeft(userId);
+
+const statsData = {
+  total: total.value,
+  monthly: monthly.value,
+  average: average.value,
+  budgetLeft: budgetLeft.value,
+  categories: categories, // ✅ from Firebase
+};
+
+  const { suggestions, loading } = useAISuggestions(
+    userId,
+    statsData
+  );
 
   const stats = [
     { title: "Total Expenses", data: total, icon: DollarSign },
@@ -39,8 +55,8 @@ const DashboardOverview = () => {
             className="group relative overflow-hidden border border-border/60 bg-card/80 backdrop-blur-md 
              transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:border-primary/50"
           >
-           { /* Soft gradient glow effect */}
-             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            {/* Soft gradient glow effect */}
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground group-hover:text-primary transition-colors duration-300">
                 {stat.title}
@@ -110,7 +126,40 @@ const DashboardOverview = () => {
             </div>
           </div>
         </CardContent>
-      </Card> */}
+      </Card>  */}
+
+      <Card className="bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
+        <CardHeader>
+          <CardTitle className="font-heading">
+            💡 Smart Suggestions
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {loading && categoryLoading ? (
+            <p className="text-muted-foreground text-sm">
+              Analyzing your data...
+            </p>
+          ) : suggestions.length > 0 ? (
+            suggestions.map((s, i) => (
+              <div key={i} className="flex items-start space-x-3">
+                <div className="w-2 h-2 bg-primary rounded-full mt-2" />
+                <div>
+                  <p className="font-medium text-foreground">
+                    {s.title}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {s.message}
+                  </p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              No new suggestions yet. Spend wisely! 💸
+            </p>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
