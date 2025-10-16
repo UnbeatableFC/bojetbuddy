@@ -1,7 +1,10 @@
 import { ReactNode } from "react";
 import { LayoutDashboard, Plus, List, Settings as SettingsIcon, LogOut, Wallet } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
-import { Button } from "./ui/button";
+import Link from "next/link";
+import { Button } from "../ui/button";
+import { usePathname } from "next/navigation";
+
+
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -9,13 +12,13 @@ interface DashboardLayoutProps {
 }
 
 const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
-  const location = useLocation();
+  const pathname = usePathname();
 
   const navItems = [
     { icon: LayoutDashboard, label: "Overview", path: "/dashboard" },
-    { icon: Plus, label: "Add Expense", path: "/dashboard/add" },
-    { icon: List, label: "All Expenses", path: "/dashboard/expenses" },
-    { icon: SettingsIcon, label: "Settings", path: "/dashboard/settings" },
+    { icon: Plus, label: "Add Expense", path: "/add" },
+    { icon: List, label: "All Expenses", path: "/expenses" },
+    { icon: SettingsIcon, label: "Settings", path: "/settings" },
   ];
 
   return (
@@ -24,7 +27,7 @@ const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
         {/* Sidebar */}
         <aside className="hidden md:flex md:w-64 md:flex-col border-r border-border bg-card min-h-screen">
           <div className="flex h-16 items-center px-6 border-b border-border">
-            <Link to="/" className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-2">
               <Wallet className="h-6 w-6 text-primary" />
               <h1 className="text-xl font-heading font-bold text-foreground">
                 BudgetBuddy
@@ -33,11 +36,11 @@ const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
           </div>
           <nav className="flex-1 space-y-1 p-4">
             {navItems.map((item) => {
-              const isActive = location.pathname === item.path;
+              const isActive = pathname === item.path;
               return (
                 <Link
                   key={item.path}
-                  to={item.path}
+                  href={item.path}
                   className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
                     isActive
                       ? "bg-primary text-primary-foreground"
@@ -52,7 +55,7 @@ const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
           </nav>
           <div className="p-4 border-t border-border">
             <Button variant="outline" className="w-full" asChild>
-              <Link to="/">
+              <Link href="/">
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
               </Link>
@@ -79,7 +82,7 @@ const DashboardLayout = ({ children, title }: DashboardLayoutProps) => {
             return (
               <Link
                 key={item.path}
-                to={item.path}
+                href={item.path}
                 className={`flex flex-col items-center justify-center py-2 rounded-lg transition-colors ${
                   isActive
                     ? "bg-primary text-primary-foreground"
