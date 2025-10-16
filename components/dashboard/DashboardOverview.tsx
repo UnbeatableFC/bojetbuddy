@@ -1,6 +1,7 @@
 import {
   CreditCard,
   DollarSign,
+  RefreshCcw,
   TrendingDown,
   TrendingUp,
 } from "lucide-react";
@@ -14,26 +15,28 @@ import { useAverageDaily } from "@/hooks/useAverageDaily";
 import { useBudgetLeft } from "@/hooks/useBudgetLeft";
 import { useAISuggestions } from "@/hooks/useAISuggestions";
 import { useCategoryExpenses } from "@/hooks/useCategoryExpenses";
+import { Button } from "../ui/button";
 
 const DashboardOverview = () => {
   const { user } = useUser();
   const userId = user?.id || "";
-  const { categories, loading: categoryLoading } = useCategoryExpenses(userId);
+  const { categories, loading: categoryLoading } =
+    useCategoryExpenses(userId);
 
   const total = useTotalExpenses(userId);
   const monthly = useMonthlyExpenses(userId);
   const average = useAverageDaily(userId);
   const budgetLeft = useBudgetLeft(userId);
 
-const statsData = {
-  total: total.value,
-  monthly: monthly.value,
-  average: average.value,
-  budgetLeft: budgetLeft.value,
-  categories: categories, // ✅ from Firebase
-};
+  const statsData = {
+    total: total.value,
+    monthly: monthly.value,
+    average: average.value,
+    budgetLeft: budgetLeft.value,
+    categories: categories, // ✅ from Firebase
+  };
 
-  const { suggestions, loading } = useAISuggestions(
+  const { suggestions, loading ,refetchSuggestions } = useAISuggestions(
     userId,
     statsData
   );
@@ -129,13 +132,34 @@ const statsData = {
       </Card>  */}
 
       <Card className="bg-gradient-to-br from-primary/5 to-accent/5 border-primary/20">
-        <CardHeader>
-          <CardTitle className="font-heading">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="font-heading flex items-center gap-2">
             💡 Smart Suggestions
           </CardTitle>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => refetchSuggestions()} // 👈 new trigger
+            disabled={loading || categoryLoading}
+            className="flex items-center gap-1 text-sm bg-gradient-to-br from-blue-500 to-teal-300"
+          >
+            {loading ? (
+              <>
+                <RefreshCcw className="h-4 w-4 animate-spin" />
+                <span>Regenerating...</span>
+              </>
+            ) : (
+              <>
+                <RefreshCcw className="h-4 w-4" />
+                <span>Regenerate</span>
+              </>
+            )}
+          </Button>
         </CardHeader>
+
         <CardContent className="space-y-3">
-          {loading && categoryLoading ? (
+          {loading || categoryLoading ? (
             <p className="text-muted-foreground text-sm">
               Analyzing your data...
             </p>

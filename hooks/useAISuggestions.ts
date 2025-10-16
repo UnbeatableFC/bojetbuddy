@@ -1,5 +1,6 @@
 import { StatsData, Suggestion } from "@/types/types";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { toast } from "sonner";
 
 export const useAISuggestions = (
   userId: string,
@@ -9,49 +10,48 @@ export const useAISuggestions = (
   const [loading, setLoading] = useState(false);
 
   // Keep track of previous stats to detect changes
-  const prevStatsRef = useRef<StatsData | null>(null);
+  const prevStatsRef = useRef<string>("");
 
+  // ✅ Define fetchSuggestions outside useEffect using useCallback
+  const fetchSuggestions = useCallback(async () => {
+    if (!userId || !stats) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch("/api/ai-suggestions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ stats }),
+      });
+
+      if (!res.ok) {
+        console.error("Failed to fetch AI suggestions:", res.statusText);
+        return;
+      }
+
+      const data = await res.json();
+      if (data.suggestions) setSuggestions(data.suggestions);
+      toast.success("✨ AI Suggestions Updated")
+      console.log("✅ AI suggestions received:", data);
+
+    } catch (err) {
+      console.error("❌ AI Suggestion Error:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, [userId, stats]);
+
+  // ✅ Automatically trigger only when stats change
   useEffect(() => {
     if (!userId || !stats) return;
 
-    // Convert stats to JSON string for shallow comparison
     const currentStatsString = JSON.stringify(stats);
-    const prevStatsString = JSON.stringify(prevStatsRef.current);
+    if (currentStatsString === prevStatsRef.current) return;
 
-    // Only trigger API if stats actually changed
-    if (currentStatsString === prevStatsString) return;
-
-    prevStatsRef.current = stats;
-
-    const fetchSuggestions = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch("/api/ai-suggestions", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ stats }),
-        });
-
-        if (!res.ok) {
-          console.error(
-            "Failed to fetch AI suggestions:",
-            res.statusText
-          );
-          return;
-        }
-
-        const data = await res.json();
-        if (data.suggestions) setSuggestions(data.suggestions);
-        console.log("This worked well" , {data})
-      } catch (err) {
-        console.error("AI Suggestion Error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    prevStatsRef.current = currentStatsString;
     fetchSuggestions();
-  }, [userId, stats]);
+  }, [userId, stats, fetchSuggestions]);
 
-  return { suggestions, loading };
+  // ✅ Return the function for manual regeneration
+  return { suggestions, loading, refetchSuggestions: fetchSuggestions };
 };
