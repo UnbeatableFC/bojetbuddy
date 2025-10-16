@@ -1,0 +1,121 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Define dark mode variant */
+@custom-variant dark (&:is(.dark *));
+
+/* Tailwind Theme Tokens */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* 🌤️ LIGHT MODE */
+:root {
+  --radius: 0.625rem;
+
+  /* Brand Colors */
+  --primary: #0A74DA; /* Primary Blue */
+  --primary-foreground: #FFFFFF;
+
+  --secondary: #083D77; /* Dark Blue */
+  --secondary-foreground: #FFFFFF;
+
+  --accent: #E6F0FA; /* Light Blue */
+  --accent-foreground: #083D77;
+
+  --muted: #E0E0E0; /* Neutral Gray */
+  --muted-foreground: #2E2E2E;
+
+  /* UI Elements */
+  --background: #FFFFFF;
+  --foreground: #2E2E2E;
+  --card: #FFFFFF;
+  --card-foreground: #2E2E2E;
+  --border: #E0E0E0;
+  --input: #E0E0E0;
+  --ring: #0A74DA;
+
+  /* Sidebar */
+  --sidebar: #E6F0FA;
+  --sidebar-foreground: #083D77;
+  --sidebar-primary: #0A74DA;
+  --sidebar-primary-foreground: #FFFFFF;
+}
+
+/* 🌙 DARK MODE */
+.dark {
+  --primary: #2E9AFF; /* Lighter blue accent for dark mode */
+  --primary-foreground: #041C3C;
+
+  --secondary: #041C3C; /* Deep dark blue background */
+  --secondary-foreground: #D1D5DB;
+
+  --accent: #0E1B2B; /* Muted blue-gray */
+  --accent-foreground: #2E9AFF;
+
+  --muted: #1E293B; /* Neutral dark gray */
+  --muted-foreground: #D1D5DB;
+
+  /* UI Elements */
+  --background: #0E1B2B;
+  --foreground: #D1D5DB;
+  --card: #041C3C;
+  --card-foreground: #D1D5DB;
+  --border: #1E293B;
+  --input: #1E293B;
+  --ring: #2E9AFF;
+
+  /* Sidebar */
+  --sidebar: #041C3C;
+  --sidebar-foreground: #D1D5DB;
+  --sidebar-primary: #2E9AFF;
+  --sidebar-primary-foreground: #041C3C;
+}
+
+/* 🌐 GLOBAL STYLES */
+@layer base {
+  * {
+    @apply border-border outline-ring/50 transition-colors duration-300;
+  }
+  body {
+    @apply bg-background font-sans text-base leading-relaxed text-foreground;
+  }
+  /* button {
+    @apply bg-primary text-primary-foreground hover:bg-secondary transition-all;
+  } */
+  .card {
+    @apply bg-card text-card-foreground border border-border rounded-lg shadow-sm;
+  }
+  
+}
