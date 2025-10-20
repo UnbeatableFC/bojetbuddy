@@ -18,13 +18,9 @@ import {
 } from "recharts";
 import { db } from "@/lib/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
-import {
-  startOfWeek,
-  addDays,
-  format,
-  isSameDay,
-} from "date-fns";
+import { startOfWeek, addDays, format, isSameDay } from "date-fns";
 import { Timestamp } from "firebase/firestore";
+import { useTheme } from "next-themes";
 
 interface Expense {
   amount: number;
@@ -36,6 +32,7 @@ interface Props {
 }
 
 const ExpenseChart = ({ userId }: Props) => {
+  const { theme } = useTheme();
   const [data, setData] = useState<
     { name: string; amount: number }[]
   >([]);
@@ -63,7 +60,10 @@ const ExpenseChart = ({ userId }: Props) => {
           let dateValue: Date | null = null;
           if (exp.date instanceof Timestamp) {
             dateValue = exp.date.toDate();
-          } else if (typeof exp.date === "string" || typeof exp.date === "number") {
+          } else if (
+            typeof exp.date === "string" ||
+            typeof exp.date === "number"
+          ) {
             dateValue = new Date(exp.date);
           }
 
@@ -112,7 +112,10 @@ const ExpenseChart = ({ userId }: Props) => {
               dataKey="name"
               tick={{
                 fontSize: 12,
-                fill: "hsl(var(--muted-foreground))",
+                fill:
+                  theme === "dark"
+                    ? "white"
+                    : "hsl(var(--muted-foreground))",
               }}
               axisLine={false}
               tickLine={false}
@@ -120,10 +123,11 @@ const ExpenseChart = ({ userId }: Props) => {
             <YAxis
               tick={{
                 fontSize: 12,
-                fill: "hsl(var(--muted-foreground))",
+                fill: "var(--y-axis-color)",
               }}
               axisLine={false}
               tickLine={false}
+              className="dark:text-white"
             />
             <Tooltip
               contentStyle={{

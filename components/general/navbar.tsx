@@ -4,6 +4,7 @@ import { SignInButton, SignUpButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import ModeToggle from "../mode-toggle";
 
 const Header = () => {
   return (
@@ -35,6 +36,7 @@ const Header = () => {
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          <ModeToggle />
           <SignInButton>
             <Button variant={"ghost"} size={"sm"}>
               Sign In

@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -38,9 +39,16 @@ export default function RootLayout({
           className={`${inter.variable} ${raleway.variable}`}
           suppressHydrationWarning
         >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
           <body className={`font-sans antialiased bg-accent`}>
             {children}
           </body>
+          </ThemeProvider>
           <Toaster richColors />
           <Sonner />
         </html>

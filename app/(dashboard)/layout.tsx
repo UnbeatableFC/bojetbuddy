@@ -1,5 +1,6 @@
 "use client";
 
+import ModeToggle from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { UserButton, useUser } from "@clerk/nextjs";
@@ -71,7 +72,8 @@ const DashboardLayout = ({
           {sidebarItems.map((item, idx) => {
             const isActive =
               pathname === item.href ||
-              (item.href !== "/dashboard" && pathname.startsWith(item.href));
+              (item.href !== "/dashboard" &&
+                pathname.startsWith(item.href));
 
             return (
               <Link
@@ -122,6 +124,14 @@ const DashboardLayout = ({
         {/* Header */}
         <header className="fixed top-0 right-0 w-full z-30 bg-gradient-to-r from-[#E6F0FA]/80 to-[#ffffff]/60 dark:from-[#041C3C]/90 dark:to-[#0E1B2B]/90 backdrop-blur-xl border-b border-border/50 shadow-sm transition-all duration-300">
           <div className="flex items-center justify-between px-4 lg:px-8 py-4">
+            <div className="">
+              {{
+                "/dashboard": "Dashboard",
+                "/expenses": "Expenses",
+                "/add": "Add Expense",
+                "/settings": "Settings",
+              }[pathname] || ""}
+            </div>
             <div className="flex items-center space-x-4">
               <Button
                 variant="ghost"
@@ -132,7 +142,10 @@ const DashboardLayout = ({
                 <Menu className="size-5" />
               </Button>
             </div>
-            <div className="flex items-center gap-3">
+
+            <div className="flex items-center justify-between gap-3">
+              <ModeToggle />
+
               <UserButton />
             </div>
           </div>
@@ -147,8 +160,10 @@ const DashboardLayout = ({
         <footer className="bg-[#E6F0FA] dark:bg-[#0E1B2B] border-t border-border/40 py-6 text-center shadow-inner">
           <p className="text-sm text-muted-foreground font-medium">
             © {new Date().getFullYear()}{" "}
-            <span className="text-primary font-semibold">BojetBuddy</span>. All
-            rights reserved.
+            <span className="text-primary font-semibold">
+              BojetBuddy
+            </span>
+            . All rights reserved.
           </p>
         </footer>
       </div>

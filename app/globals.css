@@ -71,6 +71,9 @@
   --sidebar-foreground: #083D77;
   --sidebar-primary: #0A74DA;
   --sidebar-primary-foreground: #FFFFFF;
+
+   --y-axis-color: hsl(var(--muted-foreground));
+   --x-axis-color: hsl(var(--muted-foreground));
 }
 
 /* 🌙 DARK MODE */
@@ -101,6 +104,9 @@
   --sidebar-foreground: #D1D5DB;
   --sidebar-primary: #2E9AFF;
   --sidebar-primary-foreground: #041C3C;
+
+    --y-axis-color: white;
+    --x-axis-color: white;
 }
 
 /* 🌐 GLOBAL STYLES */
