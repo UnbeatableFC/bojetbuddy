@@ -15,11 +15,10 @@ A modern, beautiful web application for students to track, manage, and optimize 
 
 ## 🛠️ Tech Stack
 
-- **Frontend Framework**: React 18 with TypeScript
+- **Frontend Framework**: NextJS 19 with TypeScript
 - **Build Tool**: Vite
 - **Styling**: Tailwind CSS with custom design system
 - **UI Components**: Shadcn/ui
-- **Routing**: React Router v6
 - **Charts**: Recharts
 - **State Management**: TanStack Query
 - **Forms**: React Hook Form with Zod validation
@@ -61,7 +60,7 @@ npm install
 npm run dev
 ```
 
-The application will be available at `http://localhost:8080`
+The application will be available at `http://localhost:3000`
 
 ### Building for Production
 
@@ -112,9 +111,9 @@ To enable backend features, connect Lovable Cloud through the Lovable interface.
 1. **Home** (`/`): Landing page with hero section and features
 2. **Authentication** (`/auth`): Login and signup forms
 3. **Dashboard** (`/dashboard`): Overview with charts and statistics
-4. **Add Expense** (`/dashboard/add`): Form to create new expenses
-5. **Expenses List** (`/dashboard/expenses`): Filterable table of all expenses
-6. **Settings** (`/dashboard/settings`): Category management and data controls
+4. **Add Expense** (`/add`): Form to create new expenses
+5. **Expenses List** (`/expenses`): Filterable table of all expenses
+6. **Settings** (`/settings`): Category management and data controls
 
 ## 🤝 Contributing
 
@@ -132,4 +131,3 @@ MIT License - feel free to use this project for learning and personal use.
 
 ---
 
-**Note**: This project uses Lovable Cloud for backend functionality. For local development without backend features, the app will work with mock data. Connect Lovable Cloud to enable full functionality including authentication and data persistence.
