@@ -106,11 +106,11 @@ const ExpensesList = () => {
 
       const matchesAmount =
         amountFilter === "all" ||
-        (amountFilter === "low" && expense.amount < 20) ||
+        (amountFilter === "low" && expense.amount < 2000) ||
         (amountFilter === "medium" &&
-          expense.amount >= 20 &&
-          expense.amount < 100) ||
-        (amountFilter === "high" && expense.amount >= 100);
+          expense.amount >= 2000 &&
+          expense.amount < 10000) ||
+        (amountFilter === "high" && expense.amount >= 10000);
 
       return matchesSearch && matchesCategory && matchesAmount;
     });
@@ -191,9 +191,9 @@ const ExpensesList = () => {
               </SelectTrigger>
               <SelectContent className="bg-card border-border">
                 <SelectItem value="all">All Amounts</SelectItem>
-                <SelectItem value="low">Under $20</SelectItem>
-                <SelectItem value="medium">$20 - $100</SelectItem>
-                <SelectItem value="high">Over $100</SelectItem>
+                <SelectItem value="low">Under ₦2000</SelectItem>
+                <SelectItem value="medium">₦2000 - ₦10000</SelectItem>
+                <SelectItem value="high">Over ₦10000</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -253,7 +253,7 @@ const ExpensesList = () => {
                           : "-"}
                       </TableCell>
                       <TableCell className="text-right font-medium font-sans">
-                        ${expense.amount.toFixed(2)}
+                        ₦{expense.amount.toFixed(2)}
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
@@ -291,7 +291,7 @@ const ExpensesList = () => {
                   Total
                 </p>
                 <p className="text-2xl font-heading font-bold text-primary">
-                  $
+                  ₦
                   {filteredExpenses
                     .reduce((sum, expense) => sum + expense.amount, 0)
                     .toFixed(2)}
